@@ -20,20 +20,45 @@ The selected date should be displayed in the date input field in the expected fo
 
 describe("Select date in November 2024 with right arrow keys and validate", () => {
   it("should select a date and validate it", () => {
-    const dateToSelect = "11/20/2024"; // set the date to select using a variable
-
+    // Set up date variables
+    const dateToSelect = "11-24-2024";
+    const targetDate = new Date(Date.parse(dateToSelect));
+    const currentDate = new Date();
+    const monthDiff =
+      targetDate.getMonth() -
+      currentDate.getMonth() +
+      12 * (targetDate.getFullYear() - currentDate.getFullYear());
+    // Open the website
     cy.visit("https://webdriveruniversity.com/Datepicker/index.html");
-    cy.get("#datepicker").click();
-    cy.get(".datepicker-switch").should("contain", "2023");
-
-    // loop to move forward through the date picker pages until November 2024 is visible
-    let currentMonth = Cypress.$(".datepicker-switch").text().trim();
-    while (currentMonth !== "November 2024") {
-      cy.get(".next").click(); // click on the right arrow to move to the next month
-      currentMonth = Cypress.$(".datepicker-switch").text().trim();
-    }
-
-    cy.get(`.datepicker-days .day:not(.old)[title="${dateToSelect}"]`).click(); // click on the desired day based on the title attribute
-    cy.get("#datepicker").should("have.value", dateToSelect); // validate that the date is selected
+    // Verify datepicker is visible & click
+    cy.get("#datepicker").should("be.visible").click();
+    // Select current selected date
+    cy.get(".datepicker-switch")
+      .eq(0)
+      .as("date")
+      .invoke("text")
+      .then(($date) => {
+        // Verify that the current year is displayed in the date picker.
+        cy.wrap($date).should("contain", currentDate.getFullYear());
+        // If target date is outside of selected month, navigate through months
+        // (can be forwards or backwards)
+        cy.wrap(new Array(Math.abs(monthDiff))).each(() => {
+          if (monthDiff > 0) {
+            cy.get(".datepicker-months th.next").click({ force: true });
+          } else {
+            cy.get(".datepicker-months th.prev").click({ force: true });
+          }
+        });
+      });
+    // Verify selected year matches target date
+    cy.get("@date").should("contain", targetDate.getFullYear());
+    // Select target day & click
+    cy.get(".datepicker-days .day:not(.old)")
+      .contains(targetDate.getDate().toString())
+      .click();
+    // Verify that placeholder value is target date
+    cy.get("input.form-control")
+      .invoke("prop", "value")
+      .should("equal", dateToSelect);
   });
 });
