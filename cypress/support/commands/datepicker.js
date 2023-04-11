@@ -13,18 +13,21 @@ Cypress.Commands.add("selectDateAndVerify", (dateToSelect) => {
   const currentDate = new Date();
   const monthDiff = getMonthDifference(currentDate, targetDate);
   // Verify datepicker is visible & click
-  cy.clickDatepicker();
-  // Select current selected date
-  cy.verifySelectedYear(currentDate);
-  // If target date is outside of selected month, navigate through months
-  // (can be forwards or backwards)
-  cy.navigateMonths(monthDiff);
-  // Verify selected year matches target date
-  cy.verifySelectedYear(targetDate);
-  // Select target day & click
-  cy.clickOnTargetDay(targetDate);
-  // Verify that placeholder value is target date
-  cy.verifyDatepickerPlaceholder(dateToSelect);
+  cy.clickDatepicker().then(() => {
+    // Select current selected date & verify current date
+    cy.verifySelectedYear(currentDate);
+    // If target date is outside of selected month, navigate through months
+    // (can be forwards or backwards)
+    cy.navigateMonths(monthDiff).then(() => {
+      // Verify selected year matches target date
+      cy.verifySelectedYear(targetDate);
+      // Select target day & click
+      cy.clickOnTargetDay(targetDate).then(() => {
+        // Verify that placeholder value is target date
+        cy.verifyDatepickerPlaceholder(dateToSelect);
+      });
+    });
+  });
 });
 
 Cypress.Commands.add("navigateMonths", (monthDiff) => {
