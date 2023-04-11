@@ -19,14 +19,13 @@ The selected date should be displayed in the date input field in the expected fo
 */
 
 describe("Select date in November 2024 with right arrow keys and validate", () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit("https://webdriveruniversity.com/Datepicker/index.html");
   });
 
   it("should select a date and validate it", () => {
     const dateToSelect = "11-24-2024";
-    // Open the website
-    // Select target date in datepicker
+    // Select date & verify
     cy.selectDateAndVerify(dateToSelect);
   });
 });
