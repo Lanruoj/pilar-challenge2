@@ -25,7 +25,7 @@ describe("Select date in November 2024 with right arrow keys and validate", () =
 
   it("should select a date and validate it", () => {
     const dateToSelect = "11-24-2024";
-    // Select date & verify
+    // Select date in datepicker & verify
     cy.selectDateAndVerify(dateToSelect);
   });
 });
