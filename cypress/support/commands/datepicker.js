@@ -20,11 +20,11 @@ Cypress.Commands.add("selectDateAndVerify", (dateToSelect) => {
   // (can be forwards or backwards)
   cy.navigateMonths(monthDiff);
   // Verify selected year matches target date
-  cy.get(selectedDateHeader).should("contain", targetDate.getFullYear());
+  cy.verifySelectedYear(targetDate);
   // Select target day & click
-  cy.get(activeDays).contains(targetDate.getDate().toString()).click();
+  cy.clickOnTargetDay(targetDate);
   // Verify that placeholder value is target date
-  cy.get(placeHolderDate).invoke("prop", "value").should("equal", dateToSelect);
+  cy.verifyDatepickerPlaceholder(dateToSelect);
 });
 
 Cypress.Commands.add("navigateMonths", (monthDiff) => {
@@ -45,4 +45,13 @@ Cypress.Commands.add("clickDatepicker", () => {
 Cypress.Commands.add("verifySelectedYear", (date) => {
   const year = date.getFullYear();
   cy.get(selectedDateHeader).should("contain", year);
+});
+
+Cypress.Commands.add("clickOnTargetDay", (targetDate) => {
+  const day = targetDate.getDate().toString();
+  cy.get(activeDays).contains(day).click();
+});
+
+Cypress.Commands.add("verifyDatepickerPlaceholder", (dateToSelect) => {
+  cy.get(placeHolderDate).invoke("prop", "value").should("equal", dateToSelect);
 });
