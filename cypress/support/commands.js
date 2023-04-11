@@ -43,7 +43,7 @@ Cypress.Commands.add("selectDate", (dateToSelect) => {
   const currentDate = new Date();
   const monthDiff = getMonthDifference(currentDate, targetDate);
   // Verify datepicker is visible & click
-  cy.get("#datepicker").should("be.visible").click();
+  cy.clickDatepicker();
   // Select current selected date
   cy.get(".datepicker-switch")
     .eq(0)
@@ -66,4 +66,8 @@ Cypress.Commands.add("selectDate", (dateToSelect) => {
   cy.get("input.form-control")
     .invoke("prop", "value")
     .should("equal", dateToSelect);
+});
+
+Cypress.Commands.add("clickDatepicker", () => {
+  cy.get("#datepicker").should("be.visible").click();
 });
