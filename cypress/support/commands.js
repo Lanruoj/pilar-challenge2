@@ -24,6 +24,8 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+import { getMonthDifference } from "./utils";
+
 Cypress.Commands.add("navigateMonths", (monthDiff) => {
   const iterations = new Array(Math.abs(monthDiff));
   cy.wrap(iterations).each(() => {
@@ -39,10 +41,7 @@ Cypress.Commands.add("selectDate", (dateToSelect) => {
   // Set up date variables
   const targetDate = new Date(Date.parse(dateToSelect));
   const currentDate = new Date();
-  const monthDiff =
-    targetDate.getMonth() -
-    currentDate.getMonth() +
-    12 * (targetDate.getFullYear() - currentDate.getFullYear());
+  const monthDiff = getMonthDifference(currentDate, targetDate);
   // Verify datepicker is visible & click
   cy.get("#datepicker").should("be.visible").click();
   // Select current selected date
