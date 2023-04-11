@@ -15,7 +15,7 @@ Cypress.Commands.add("selectDateAndVerify", (dateToSelect) => {
   // Verify datepicker is visible & click
   cy.clickDatepicker();
   // Select current selected date
-  cy.get(selectedDateHeader).should("contain", currentDate.getFullYear());
+  cy.verifySelectedYear(currentDate);
   // If target date is outside of selected month, navigate through months
   // (can be forwards or backwards)
   cy.navigateMonths(monthDiff);
@@ -42,4 +42,7 @@ Cypress.Commands.add("clickDatepicker", () => {
   cy.get(datepicker).should("be.visible").click();
 });
 
-// HELLO
+Cypress.Commands.add("verifySelectedYear", (date) => {
+  const year = date.getFullYear();
+  cy.get(selectedDateHeader).should("contain", year);
+});
