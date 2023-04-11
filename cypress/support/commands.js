@@ -23,3 +23,14 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("navigateMonths", (monthDiff) => {
+  const iterations = new Array(Math.abs(monthDiff));
+  cy.wrap(iterations).each(() => {
+    if (monthDiff > 0) {
+      cy.get(".datepicker-months th.next").click({ force: true });
+    } else {
+      cy.get(".datepicker-months th.prev").click({ force: true });
+    }
+  });
+});
