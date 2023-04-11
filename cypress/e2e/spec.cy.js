@@ -20,39 +20,10 @@ The selected date should be displayed in the date input field in the expected fo
 
 describe("Select date in November 2024 with right arrow keys and validate", () => {
   it("should select a date and validate it", () => {
-    // Set up date variables
     const dateToSelect = "11-24-2024";
-    const targetDate = new Date(Date.parse(dateToSelect));
-    const currentDate = new Date();
-    const monthDiff =
-      targetDate.getMonth() -
-      currentDate.getMonth() +
-      12 * (targetDate.getFullYear() - currentDate.getFullYear());
     // Open the website
     cy.visit("https://webdriveruniversity.com/Datepicker/index.html");
-    // Verify datepicker is visible & click
-    cy.get("#datepicker").should("be.visible").click();
-    // Select current selected date
-    cy.get(".datepicker-switch")
-      .eq(0)
-      .as("date")
-      .invoke("text")
-      .then(($date) => {
-        // Verify that the current year is displayed in the date picker.
-        cy.wrap($date).should("contain", currentDate.getFullYear());
-        // If target date is outside of selected month, navigate through months
-        // (can be forwards or backwards)
-        cy.navigateMonths(monthDiff);
-      });
-    // Verify selected year matches target date
-    cy.get("@date").should("contain", targetDate.getFullYear());
-    // Select target day & click
-    cy.get(".datepicker-days .day:not(.old)")
-      .contains(targetDate.getDate().toString())
-      .click();
-    // Verify that placeholder value is target date
-    cy.get("input.form-control")
-      .invoke("prop", "value")
-      .should("equal", dateToSelect);
+    // Select target date in datepicker
+    cy.selectDate(dateToSelect);
   });
 });
