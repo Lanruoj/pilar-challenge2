@@ -41,3 +41,5 @@ Cypress.Commands.add("navigateMonths", (monthDiff) => {
 Cypress.Commands.add("clickDatepicker", () => {
   cy.get(datepicker).should("be.visible").click();
 });
+
+// HELLO
