@@ -42,13 +42,7 @@ describe("Select date in November 2024 with right arrow keys and validate", () =
         cy.wrap($date).should("contain", currentDate.getFullYear());
         // If target date is outside of selected month, navigate through months
         // (can be forwards or backwards)
-        cy.wrap(new Array(Math.abs(monthDiff))).each(() => {
-          if (monthDiff > 0) {
-            cy.get(".datepicker-months th.next").click({ force: true });
-          } else {
-            cy.get(".datepicker-months th.prev").click({ force: true });
-          }
-        });
+        cy.navigateMonths(monthDiff);
       });
     // Verify selected year matches target date
     cy.get("@date").should("contain", targetDate.getFullYear());
