@@ -7,7 +7,7 @@
     "test": "npx cypress run",
     "merge": "mochawesome-merge cypress/reports/mochawesome/*.json > cypress/reports/report.json",
     "marge": "marge cypress/reports/report.json --reportDir ./ --inline",
-    "delete:reports": "rimraf cypress/reports/mochawesome/*",
+    "delete:reports": "rimraf cypress/reports/mochawesome",
     "report": "npm run delete:reports && npm test && npm run merge && npm run marge"
   },
   "repository": {
