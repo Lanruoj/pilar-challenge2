@@ -1,4 +1,7 @@
-export function getMonthDifference(currentDate, targetDate) {
+export function getMonthDifference(
+  currentDate: Date,
+  targetDate: Date
+): number {
   return (
     targetDate.getMonth() -
     currentDate.getMonth() +
